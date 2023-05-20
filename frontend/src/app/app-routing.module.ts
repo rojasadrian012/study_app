@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { TopicsComponent } from './topics/topics.component';
+import { TopicsEditComponent } from './topics/topics-edit/topics-edit.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path: 'topics',
     loadChildren: () => import('./topics/topics.module').then( m => m.TopicsModule)
+  },
+  {
+    path:'topics/topic-edit/:id',
+    component: TopicsEditComponent
   },
   {
     path: '',

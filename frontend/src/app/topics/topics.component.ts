@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastController } from '@ionic/angular';
 import axios from 'axios';
 
 @Component({
@@ -10,7 +11,12 @@ export class TopicsComponent implements OnInit {
   topicos: any[] = []
   topicEditing: any = null;
 
-  constructor() { }
+  constructor(
+    private toastController: ToastController,
+
+  ) {
+    this.getTopics()
+  }
 
 
   ngOnInit() {
@@ -32,9 +38,11 @@ export class TopicsComponent implements OnInit {
   }
 
   deleteTopic(id: number) {
-    axios.delete("http://localhost:3000/topics/delete/" + id)
+    axios.delete(`http://localhost:3000/topics/delete/${id}`)
       .then(result => {
         if (result.data.success) {
+          this.presentToats("Topicp Eliminado!!!");
+          this.getTopics()
           this.topicos = this.topicos.filter(t => t.id !== id);
         } else {
           console.error('Error al eliminar el tópico');
@@ -45,9 +53,19 @@ export class TopicsComponent implements OnInit {
       });
   }
 
+  async presentToats(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 1500,
+      position: 'bottom',
+    });
+
+    await toast.present();
+  }
+
   editar(topic: any) {
     console.log(topic);
-    
+
     this.topicEditing = topic;
   }
 
@@ -67,5 +85,9 @@ export class TopicsComponent implements OnInit {
     this.topicEditing = null; // finaliza la edición sin guardar
   }
 
+  nuevo() {
+    console.log("nuevo");
+
+  }
 
 }

@@ -15,72 +15,71 @@ export class EditUserPage implements OnInit {
   private data = inject(DataService);
   private activatedRoute = inject(ActivatedRoute);
   private platform = inject(Platform);
-  usuario : any = {};
+  usuario: any = {};
 
-  constructor(private toastController: ToastController,
-   private router: Router) {}
+  constructor(
+    private toastController: ToastController,
+    private router: Router,
+    ) { }
 
   ngOnInit() {
     const id = this.activatedRoute.snapshot.paramMap.get('id') as string;
     //this.message = this.data.getMessageById(parseInt(id, 10));
     axios.get("http://localhost:3000/user/" + id)
-    .then( result => {
-      if (result.data.success == true) {
+      .then(result => {
+        if (result.data.success == true) {
 
-        if( result.data.usuario != null){
-          this.usuario = result.data.usuario;
-        }else{
-          this.usuario = {};
+          if (result.data.usuario != null) {
+            this.usuario = result.data.usuario;
+          } else {
+            this.usuario = {};
+          }
+
+        } else {
+          console.log(result.data.error);
         }
-       
-      } else {
-        console.log(result.data.error);
-      }
-      
-    }).catch(error => {
-      console.log(error.message);
-    })
+
+      }).catch(error => {
+        console.log(error.message);
+      })
   }
 
   getBackButtonText() {
     const isIos = this.platform.is('ios')
     return isIos ? 'Inbox' : '';
-    
-
-    
   }
 
-  saveUser(){
+  saveUser() {
     console.log("usuario", this.usuario);
     var data = {
-      id : this.usuario.id,
+      id: this.usuario.id,
       name: this.usuario.name,
       last_name: this.usuario.last_name,
       email: this.usuario.email
 
     }
 
-    axios.post("http://localhost:3000/users/update" , data)
-    .then(  async result => {
-      if (result.data.success == true) {
-        this.presentToats ("Usuario Guardado!!!");
+    axios.post("http://localhost:3000/users/update", data)
+      .then(async result => {
+        if (result.data.success == true) {
+          this.presentToats("Usuario Guardado!!!");
           this.router.navigate(["/home"]);
-      } else {
-        this.presentToats (result.data.error );
-        
-      }
-      
-    }).catch( async error => {
-      this.presentToats (error.message.data.error );
-    })
+        } else {
+          this.presentToats(result.data.error);
+
+        }
+
+      }).catch(async error => {
+        this.presentToats(error.message.data.error);
+      })
   }
 
-  async presentToats (message : string){
+  async presentToats(message: string) {
     const toast = await this.toastController.create({
-      message:message,
+      message: message,
       duration: 1500,
       position: 'bottom',
-      });
+    });
 
     await toast.present();
   }

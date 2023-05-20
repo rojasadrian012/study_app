@@ -1,28 +1,6 @@
 const { sequelize } = require("../connection");
 const { TopicsModel } = require("../model/topics.model");
 
-const listarTodos = async function () {
-
-    console.log("listar todos los topicos");
-
-    try {
-        const topics = await sequelize.query(`SELECT * FROM topics ORDER BY id`);
-
-        if (topics && topics[0]) {
-            // en users[0] se encuentra el listado de lo que se recupera desde el sql
-            return topics[0];
-        } else {
-            return [];
-
-        }
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-
-};
-
-
 ///cuando se trata de listar es mejor usar SQL puro por cuestion de tiempo
 const listar = async function (textoBuscar) {
 
@@ -127,5 +105,5 @@ const eliminar = async function (id) {
 };
 
 module.exports = {
-    listar, consultarPorCodigo, actualizar, eliminar, listarTodos
+    listar, consultarPorCodigo, actualizar, eliminar
 };

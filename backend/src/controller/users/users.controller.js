@@ -4,7 +4,7 @@ const UserService = require('../../service/users.service');
 const jwt = require ('jsonwebtoken');
 
 const listarController = async function(req, res) {
-    console.log("listar usuarios controller");
+    console.log("listar usuarios controllers");
     try {
         const users = await UserService.listarService(req.query.filtro || '');
         
@@ -162,5 +162,10 @@ const logout = async function (res, res){
     }
 }
 module.exports = {
-    listarController, busquedaPorCodigo: consultarPorCodigo, actualizar, eliminar, login, logout
+    listarController, 
+    busquedaPorCodigo: consultarPorCodigo, 
+    actualizar, 
+    eliminar, 
+    login, 
+    logout
 };
